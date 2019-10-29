@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <RH_RF95.h>
+#include "bsec.h"
 
 #define RFM95_CS 8
 #define RFM95_RST 4
@@ -42,6 +43,8 @@ void setup()
   digitalWrite(RFM95_RST, HIGH);
  
   Serial.begin(115200);
+
+  bme_setup();
   /* this waits until serial console is open, remove this line if not thethered to computer
   while (!Serial) {
     delay(1);
@@ -79,10 +82,7 @@ void setup()
   // you can set transmitter powers from 5 to 23 dBm:
   rf95.setTxPower(23, false);
 }
- 
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
-
+  bme_get_data();
 }
