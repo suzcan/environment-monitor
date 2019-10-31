@@ -1,99 +1,53 @@
-#include "bsec.h"
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include "Adafruit_BME680.h"
+#include <avr/dtostrf.h>
 
-void checkIaqSensorStatus(void);
-void errLeds(void);
+#define BME_SCK 13
+#define BME_MISO 12
+#define BME_MOSI 11
+#define BME_CS 10
 
-Bsec iaqSensor;
-String output;
+#define SEALEVELPRESSURE_HPA (1013.25)
 
-// code for the Bosch BME680
-void bme_setup(void)
-{
-  Wire.begin();
+Adafruit_BME680 bme;
 
-  iaqSensor.begin(BME680_I2C_ADDR_PRIMARY, Wire);
-  output = "\nBSEC library version " + String(iaqSensor.version.major) + "." + String(iaqSensor.version.minor) + "." + String(iaqSensor.version.major_bugfix) + "." + String(iaqSensor.version.minor_bugfix);
-  Serial.println(output);
-  checkIaqSensorStatus();
-
-  bsec_virtual_sensor_t sensorList[10] = {
-    BSEC_OUTPUT_RAW_TEMPERATURE,
-    BSEC_OUTPUT_RAW_PRESSURE,
-    BSEC_OUTPUT_RAW_HUMIDITY,
-    BSEC_OUTPUT_RAW_GAS,
-    BSEC_OUTPUT_IAQ,
-    BSEC_OUTPUT_STATIC_IAQ,
-    BSEC_OUTPUT_CO2_EQUIVALENT,
-    BSEC_OUTPUT_BREATH_VOC_EQUIVALENT,
-    BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_TEMPERATURE,
-    BSEC_OUTPUT_SENSOR_HEAT_COMPENSATED_HUMIDITY,
-  };
-
-  iaqSensor.updateSubscription(sensorList, 10, BSEC_SAMPLE_RATE_LP);
-  checkIaqSensorStatus();
-
-  // Print the header
-  output = "Timestamp [ms], raw temperature [°C], pressure [hPa], raw relative humidity [%], gas [Ohm], IAQ, IAQ accuracy, temperature [°C], relative humidity [%], Static IAQ, CO2 equivalent, breath VOC equivalent";
-  Serial.println(output);
+void format_add(char output[], char buff[], double val) {
+  dtostrf(val, 6, 2, buff);
+  strcat(output, buff);
+  strcat(output, ", ");
+  memset(buff, 0, sizeof(buff));
 }
 
-// Function that is looped forever
-void bme_get_data(void)
-{
-  
-  unsigned long time_trigger = millis();
-  if (iaqSensor.run()) { // If new data is available
-    output = String(time_trigger);
-    output += ", " + String(iaqSensor.rawTemperature);
-    output += ", " + String(iaqSensor.pressure);
-    output += ", " + String(iaqSensor.rawHumidity);
-    output += ", " + String(iaqSensor.gasResistance);
-    output += ", " + String(iaqSensor.iaq);
-    output += ", " + String(iaqSensor.iaqAccuracy);
-    output += ", " + String(iaqSensor.temperature);
-    output += ", " + String(iaqSensor.humidity);
-    output += ", " + String(iaqSensor.staticIaq);
-    output += ", " + String(iaqSensor.co2Equivalent);
-    output += ", " + String(iaqSensor.breathVocEquivalent);
-    Serial.println(output);
+void bme680_setup() {
+  Serial.println("INFO: BME680 sensor setup");
+
+  if(!bme.begin()){
+    Serial.println("ERROR: could not find BME680 sensor");
   } else {
-    checkIaqSensorStatus();
+    bme.setTemperatureOversampling(BME680_OS_8X);
+    bme.setHumidityOversampling(BME680_OS_2X);
+    bme.setPressureOversampling(BME680_OS_4X);
+    bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
+    bme.setGasHeater(320, 150);
   }
 }
 
-// Helper function definitions
-void checkIaqSensorStatus(void)
-{
-  if (iaqSensor.status != BSEC_OK) {
-    if (iaqSensor.status < BSEC_OK) {
-      output = "BSEC error code : " + String(iaqSensor.status);
-      Serial.println(output);
-      for (;;)
-        errLeds(); /* Halt in case of failure */
-    } else {
-      output = "BSEC warning code : " + String(iaqSensor.status);
-      Serial.println(output);
-    }
+void bme680_reading(char outputp[]){
+  if(!bme.performReading()) {
+    Serial.println("ERROR: Failed to perform reading from BME680");
+    return;
   }
 
-  if (iaqSensor.bme680Status != BME680_OK) {
-    if (iaqSensor.bme680Status < BME680_OK) {
-      output = "BME680 error code : " + String(iaqSensor.bme680Status);
-      Serial.println(output);
-      for (;;)
-        errLeds(); /* Halt in case of failure */
-    } else {
-      output = "BME680 warning code : " + String(iaqSensor.bme680Status);
-      Serial.println(output);
-    }
-  }
+  char buff[8];
+  format_add(output, buff, bme.temperature); // C
+  format_add(output, buff, bme.pressure / 100.0); // hPa
+  format_add(output, buff, bme.humidity); // (%)
+  format_add(output, buff, bme.gas_resistance / 1000.0); // (KOhms)
+  format_add(output, buff, bme.readAltitude(SEALEVELPRESSURE_HPA)); // (m)
+
+  return;
 }
 
-void errLeds(void)
-{
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(100);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(100);
-}
+
