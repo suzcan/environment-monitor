@@ -43,12 +43,6 @@ void lora_setup()
 {
   pinMode(RFM95_RST, OUTPUT);
   digitalWrite(RFM95_RST, HIGH);
-  
-  /* this waits until serial console is open, remove this line if not thethered to computer
-  while (!Serial) {
-    delay(1);
-  }
-  */
   delay(100);
  
   Serial.println("INFO: LoRa feather setup");
