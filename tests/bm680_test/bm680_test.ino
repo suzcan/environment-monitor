@@ -27,37 +27,41 @@
 #define BME_CS 10
 
 #define SEALEVELPRESSURE_HPA (1013.25)
+#define BME680_DEBUG
 
-Adafruit_BME680 bme; // I2C
-//Adafruit_BME680 bme(BME_CS); // hardware SPI
-//Adafruit_BME680 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
+Adafruit_BME680 bme;
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-  Serial.println(F("BME680 test"));
+  Serial.println("BME680 test");
+
 
   if (!bme.begin()) {
     Serial.println("Could not find a valid BME680 sensor, check wiring!");
     while (1);
   }
 
+  Serial.println("setting up");
   // Set up oversampling and filter initialization
   bme.setTemperatureOversampling(BME680_OS_8X);
   bme.setHumidityOversampling(BME680_OS_2X);
   bme.setPressureOversampling(BME680_OS_4X);
   bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
   bme.setGasHeater(320, 150); // 320*C for 150 ms
+  Serial.println("finished setting up");
 }
 
 void loop() {
+  Serial.println("starting loop");
+ 
   char output[128] = "Reading: ";
-  if (! bme.performReading()) {
+  if (!bme.performReading()) {
     Serial.println("Failed to perform reading :(");
     return;
   }
 
-  ///*
+  Serial.println("starting reading");
   char buff[8];
   strcat(output, "Temperature (C) =");
   dtostrf(bme.temperature, 6, 2, buff);
@@ -86,6 +90,7 @@ void loop() {
   memset(buff, 0, sizeof(buff));
 
   Serial.println(output);
+  Serial.println("finished");
   /*
   
   Serial.print("Temperature = ");
@@ -108,6 +113,6 @@ void loop() {
   Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
   Serial.println(" m");
   */
-  Serial.println();
+  Serial.println("finished loop");
   delay(2000);
 }

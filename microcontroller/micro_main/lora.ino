@@ -5,8 +5,6 @@
 #define RFM95_CS 8
 #define RFM95_RST 4
 #define RFM95_INT 3
-
-
  
 #if defined(ESP8266)
   /* for ESP w/featherwing */ 
@@ -60,7 +58,7 @@ void lora_setup()
  
   // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM
   if (!rf95.setFrequency(RF95_FREQ)) {
-    Serial.println("setFrequency failed");
+    Serial.println("ERROR: setFrequency failed");
     while (1);
   }
   Serial.print("INFO: Set Freq to: "); Serial.println(RF95_FREQ);

@@ -2,7 +2,8 @@ char output[128] = "Reading: ";
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
+  Serial.println("begin");
   lora_setup();
   bme680_setup();
 }

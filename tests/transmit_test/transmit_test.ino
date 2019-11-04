@@ -49,7 +49,7 @@ void setup()
   pinMode(RFM95_RST, OUTPUT);
   digitalWrite(RFM95_RST, HIGH);
  
-  Serial.begin(115200);
+  Serial.begin(9600);
   /* this waits until serial console is open, remove this line if not thethered to computer
   while (!Serial) {
     delay(1);
