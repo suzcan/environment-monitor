@@ -16,10 +16,10 @@
 Adafruit_BME680 bme;
 
 void bme680_setup() {
-  Serial.println("INFO: BME680 sensor setup");
+  debug_text("INFO: BME680 sensor setup");
 
   if(!bme.begin()){
-    Serial.println("ERROR: could not find BME680 sensor");
+    debug_text("ERROR: could not find BME680 sensor");
   } else {
     bme.setTemperatureOversampling(BME680_OS_8X);
     bme.setHumidityOversampling(BME680_OS_2X);
@@ -31,7 +31,7 @@ void bme680_setup() {
 
 void bme680_reading(char output[]){
   if(!bme.performReading()) {
-    Serial.println("ERROR: Failed to perform reading from BME680");
+    debug_text("ERROR: Failed to perform reading from BME680");
     return;
   }
 

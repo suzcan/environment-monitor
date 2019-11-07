@@ -3,10 +3,10 @@
 
 /*
  * Bosch BME680 // done
- * Sensirion SCD30 // tested
- * Sensirion SGP30 // tested
- * Plantower 5003 // tested
- * Silicon Lab Si1145 // tested 
+ * Sensirion SCD30 // done
+ * Sensirion SGP30 // done
+ * Plantower 5003 // done
+ * Silicon Lab Si1145 // done 
  * MAX4466 Microphone in A0 //tested
  * Alphasense 3 Channel AFE in A[1-3] //tested
  */
@@ -23,6 +23,12 @@ void format_add(char output[], char buff[], double val) {
   strcat(output, buff);
   strcat(output, ", ");
   memset(buff, 0, sizeof(buff));
+}
+
+void debug_text(String s){
+  if(DEBUG) {
+    Serial.println(s);
+  }
 }
 
 #endif

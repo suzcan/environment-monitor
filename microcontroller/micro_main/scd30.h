@@ -10,14 +10,16 @@ SCD30 scd;
 void scd30_setup()
 {
   Wire.begin();
-  scd.begin();
+  if(!scd.begin()){
+    debug_text("ERROR: could not find SCD30 sensor");
+  }
 }
 
 void scd30_reading(char output[])
 {
   // data available every 2 seconds
   if(!scd.dataAvailable()) {
-    Serial.println("ERROR: Failed to perform reading from SCD30");
+    debug_text("ERROR: Failed to perform reading from SCD30");
     return;
   }
 
