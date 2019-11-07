@@ -5,8 +5,7 @@
 #include "pms5003.h"
 #include "si1145.h"
 #include "analog.h"
-
-#define DEBUG false
+#include "mic.h"
 
 char output[1024] = "Reading: ";
 
@@ -29,7 +28,7 @@ void loop()
   scd30_reading(output);
   sgp30_reading(output);
   pms5003_reading(output);
-  s1145_reading(output);
+  sill45_reading(output);
   analog_reading(output);
   mic_reading(output);
   lora_transmit(output);

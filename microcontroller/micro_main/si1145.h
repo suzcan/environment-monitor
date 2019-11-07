@@ -9,10 +9,10 @@ Adafruit_SI1145 si = Adafruit_SI1145();
 
 void si1145_setup()
 {
-  debug_text("INFO: SI1145 sensor setup");
+  Serial.println("INFO: SI1145 sensor setup");
   
   if (!si.begin()) {
-    debug_text("ERROR: could not find SI1145 sensor");
+    Serial.println("ERROR: could not find SI1145 sensor");
   }
 }
 

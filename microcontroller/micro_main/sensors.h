@@ -25,10 +25,4 @@ void format_add(char output[], char buff[], double val) {
   memset(buff, 0, sizeof(buff));
 }
 
-void debug_text(String s){
-  if(DEBUG) {
-    Serial.println(s);
-  }
-}
-
 #endif

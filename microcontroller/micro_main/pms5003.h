@@ -14,39 +14,7 @@ struct pms5003data {
   uint16_t checksum;
 };
 
-void pms5003_setup()
-{
-  debug_text("INFO: PMS5003 sensor setup")
-  if(!pmsSerial.begin(115200)){
-    debug_text("ERROR: could not find PMS5003 sensor");
-  }
-}
-
-
-void pms5003_readings(char output[])
-{
-  if(!readPMSdata(&pmsSerial)){
-    debug_text("ERROR: Failed to perform reading from PMS5003");
-    return;
-  } else {
-    char buff[8];
-    // concentration units standard
-    format_add(output, buff, data.pm10_standard); // pm 1.0
-    format_add(output, buff, data.pm25_standard); // pm 2.5
-    format_add(output, buff, data.pm100_standard); // pm 10
-    // concentration units environmental
-    format_add(output, buff, data.pm10_env); // pm 1.0
-    format_add(output, buff, data.pm25_env); // pm 2.5
-    format_add(output, buff, data.pm100_env); // pm 10
-    // data particles
-    format_add(output, buff, data.particles_05um); // particles > 0.3um / 0.1L air
-    format_add(output, buff, data.particles_05um); // particles > 0.5um / 0.1L air
-    format_add(output, buff, data.particles_10um); // particles > 1.0um / 0.1L air
-    format_add(output, buff, data.particles_25um); // particles > 2.5um / 0.1L air
-    format_add(output, buff, data.particles_50um); // particles > 5.0um / 0.1L air
-    format_add(output, buff, data.particles_100um); // particles > 10.0um / 0.1L air
-  }
-}
+struct pms5003data data;
 
 boolean readPMSdata(Stream *s) {
   if (!s->available()) {
@@ -74,7 +42,7 @@ boolean readPMSdata(Stream *s) {
   }
  
   for (uint8_t i=2; i<32; i++) {
-    debug_text("0x"); debug_text(buffer[i], HEX); debug_text(", ");
+    Serial.print("0x"); Serial.print(buffer[i], HEX); Serial.println(", ");
   }
   
   // The data comes in endian'd, this solves it so it works on all platforms
@@ -87,11 +55,42 @@ boolean readPMSdata(Stream *s) {
   memcpy((void *)&data, (void *)buffer_u16, 30);
  
   if (sum != data.checksum) {
-    debug_text("ERROR: Checksum failure for PMS5003 reading");
+    Serial.println("ERROR: Checksum failure for PMS5003 reading");
     return false;
   }
   return true;
 }
 
+void pms5003_setup()
+{
+  Serial.println("INFO: PMS5003 sensor setup");
+  pmsSerial.begin(115200);
+}
+
+
+void pms5003_reading(char output[])
+{
+  if(!readPMSdata(&pmsSerial)){
+    Serial.println("ERROR: Failed to perform reading from PMS5003");
+    return;
+  } else {
+    char buff[8];
+    // concentration units standard
+    format_add(output, buff, data.pm10_standard); // pm 1.0
+    format_add(output, buff, data.pm25_standard); // pm 2.5
+    format_add(output, buff, data.pm100_standard); // pm 10
+    // concentration units environmental
+    format_add(output, buff, data.pm10_env); // pm 1.0
+    format_add(output, buff, data.pm25_env); // pm 2.5
+    format_add(output, buff, data.pm100_env); // pm 10
+    // data particles
+    format_add(output, buff, data.particles_05um); // particles > 0.3um / 0.1L air
+    format_add(output, buff, data.particles_05um); // particles > 0.5um / 0.1L air
+    format_add(output, buff, data.particles_10um); // particles > 1.0um / 0.1L air
+    format_add(output, buff, data.particles_25um); // particles > 2.5um / 0.1L air
+    format_add(output, buff, data.particles_50um); // particles > 5.0um / 0.1L air
+    format_add(output, buff, data.particles_100um); // particles > 10.0um / 0.1L air
+  }
+}
 
 #endif _PMS5003H_
