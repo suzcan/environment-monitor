@@ -16,7 +16,9 @@
 #include <SPI.h>
 #include <string.h>
 
- // helper functions
+#define DEBUG false
+
+// Helper functions
 
 void format_add(char output[], char buff[], double val) {
   dtostrf(val, 6, 2, buff);

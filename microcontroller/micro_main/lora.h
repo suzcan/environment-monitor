@@ -39,6 +39,12 @@
  
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
+
+struct data_packet {
+  char* payload;
+};
+
+struct data_packet packet;
  
 void lora_setup() 
 {
@@ -75,6 +81,11 @@ void lora_setup()
 
 void lora_transmit(char output[])
 {
-  delay(5000); 
+  delay(5000);
+  output[2111] = 0;
+  packet.payload = output;
+  rf95.send((uint8_t *) output, 2112);
+  delay(1000);
+  rf95.waitPacketSent();
 }
 #endif

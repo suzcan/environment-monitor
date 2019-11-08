@@ -16,6 +16,12 @@ struct pms5003data {
 
 struct pms5003data data;
 
+void pms5003_setup()
+{
+  Serial.println("INFO: PMS5003 sensor setup");
+  pmsSerial.begin(9600);
+}
+
 boolean readPMSdata(Stream *s) {
   if (!s->available()) {
     return false;
@@ -40,9 +46,11 @@ boolean readPMSdata(Stream *s) {
   for (uint8_t i=0; i<30; i++) {
     sum += buffer[i];
   }
- 
-  for (uint8_t i=2; i<32; i++) {
-    Serial.print("0x"); Serial.print(buffer[i], HEX); Serial.println(", ");
+
+  if(DEBUG) {
+    for (uint8_t i=2; i<32; i++) {
+      Serial.print("0x"); Serial.print(buffer[i], HEX); Serial.println(", ");
+    }
   }
   
   // The data comes in endian'd, this solves it so it works on all platforms
@@ -60,13 +68,6 @@ boolean readPMSdata(Stream *s) {
   }
   return true;
 }
-
-void pms5003_setup()
-{
-  Serial.println("INFO: PMS5003 sensor setup");
-  pmsSerial.begin(115200);
-}
-
 
 void pms5003_reading(char output[])
 {

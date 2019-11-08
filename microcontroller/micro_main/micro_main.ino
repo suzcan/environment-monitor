@@ -5,9 +5,8 @@
 #include "pms5003.h"
 #include "si1145.h"
 #include "analog.h"
-#include "mic.h"
 
-char output[1024] = "Reading: ";
+char output[2112] = "";
 
 void setup()
 {
@@ -29,8 +28,7 @@ void loop()
   sgp30_reading(output);
   pms5003_reading(output);
   sill45_reading(output);
-  analog_reading(output);
-  mic_reading(output);
+  //analog_reading(output);
   lora_transmit(output);
   Serial.println(output);
   memset(output, 0, sizeof output);
