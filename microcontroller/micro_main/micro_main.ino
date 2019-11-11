@@ -1,3 +1,4 @@
+#include "sd.h"
 #include "bme680.h"
 #include "lora.h"
 #include "scd30.h"
@@ -6,29 +7,41 @@
 #include "si1145.h"
 #include "analog.h"
 
-char output[2112] = "";
+char output[2064] = "";
 
+/*
+ * The LoRa module's CS pin is connected to microcontroller pin 8 and pulled low. To use other SPI 
+ * devices the pin 8 needs to be pulled high and pulled low for 
+ */
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("begin");
+  while (!Serial) {
+    ;
+  }
+  Serial.println("INFO: Beginning setup");
   lora_setup();
+  digitalWrite(8, HIGH);
   bme680_setup();
+  pms5003_setup();
   scd30_setup();
   sgp30_setup();
-  pms5003_setup();
-  si1145_setup();
-  analog_setup();
+  si1145_setup(); 
 }
 
 void loop()
 {
+  Serial.println("INFO: Beginning reading output");
+  digitalWrite(8, HIGH);
+  analog_reading(output);
+  mic_reading(output);
   bme680_reading(output);
+  pms5003_reading(output);
   scd30_reading(output);
   sgp30_reading(output);
-  pms5003_reading(output);
   sill45_reading(output);
-  //analog_reading(output);
+  //sd_write(output);
+  digitalWrite(8, LOW);
   lora_transmit(output);
   Serial.println(output);
   memset(output, 0, sizeof output);

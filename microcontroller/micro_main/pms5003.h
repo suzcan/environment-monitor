@@ -85,7 +85,7 @@ void pms5003_reading(char output[])
     format_add(output, buff, data.pm25_env); // pm 2.5
     format_add(output, buff, data.pm100_env); // pm 10
     // data particles
-    format_add(output, buff, data.particles_05um); // particles > 0.3um / 0.1L air
+    format_add(output, buff, data.particles_03um); // particles > 0.3um / 0.1L air
     format_add(output, buff, data.particles_05um); // particles > 0.5um / 0.1L air
     format_add(output, buff, data.particles_10um); // particles > 1.0um / 0.1L air
     format_add(output, buff, data.particles_25um); // particles > 2.5um / 0.1L air
@@ -94,4 +94,4 @@ void pms5003_reading(char output[])
   }
 }
 
-#endif _PMS5003H_
+#endif

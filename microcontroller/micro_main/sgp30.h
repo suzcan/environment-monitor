@@ -34,7 +34,7 @@ void sgp30_reading(char output[])
 
   char buff[8];
   // calculations and not raw values
-  // format_add(output, buff, sgp.TVOC); // ppb\t
+  format_add(output, buff, sgp.TVOC); // ppb\t
   // format_add(output, buff, sgp.eCO2); // ppm
 
   // raw measurements

@@ -8,43 +8,14 @@
 #define RFM95_CS 8
 #define RFM95_RST 4
 #define RFM95_INT 3
- 
-#if defined(ESP8266)
-  // for ESP w/featherwing 
-  #define RFM95_CS  2    // "E"
-  #define RFM95_RST 16   // "D"
-  #define RFM95_INT 15   // "B"
- 
-#elif defined(ESP32)  
-  // ESP32 feather w/wing
-  #define RFM95_RST     27   // "A"
-  #define RFM95_CS      33   // "B"
-  #define RFM95_INT     12   //  next to A
- 
-#elif defined(NRF52)  
-  // nRF52832 feather w/wing
-  #define RFM95_RST     7   // "A"
-  #define RFM95_CS      11   // "B"
-  #define RFM95_INT     31   // "C"
-  
-#elif defined(TEENSYDUINO)
-  // Teensy 3.x w/wing
-  #define RFM95_RST     9   // "A"
-  #define RFM95_CS      10   // "B"
-  #define RFM95_INT     4    // "C"
-#endif
+// Max size for the driver is the message can send is 251 octates
+#define RFM95_MAX 251
  
 // Transmission frequency
 #define RF95_FREQ 433.0
  
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
-
-struct data_packet {
-  char* payload;
-};
-
-struct data_packet packet;
  
 void lora_setup() 
 {
@@ -81,11 +52,27 @@ void lora_setup()
 
 void lora_transmit(char output[])
 {
-  delay(5000);
-  output[2111] = 0;
-  packet.payload = output;
-  rf95.send((uint8_t *) output, 2112);
-  delay(1000);
-  rf95.waitPacketSent();
+  int msg_length = 2064;
+  int max_msg_length = RFM95_MAX * 8;
+  output[msg_length] = 0;
+  int i, j;
+  char temp[max_msg_length];
+
+  int looper = 1;
+  int stopper = msg_length;
+  while(stopper < max_msg_length) {
+    looper++;
+    stopper = stopper - max_msg_length;
+  }
+
+  for(i = 0; i < looper; i++) {
+    for(j = 0; j < max_msg_length; j++) {
+      int index = j + (max_msg_length*i);
+      if (index < msg_length)
+        temp[j] = output[j + (max_msg_length*i)];
+    }
+    rf95.send((uint8_t *) output, 251);
+    rf95.waitPacketSent();
+  }
 }
 #endif
