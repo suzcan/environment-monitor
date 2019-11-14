@@ -6,6 +6,7 @@
 #include "pms5003.h"
 #include "si1145.h"
 #include "analog.h"
+#include "monitor.h"
 
 char output[2064] = "";
 
@@ -16,10 +17,9 @@ char output[2064] = "";
 void setup()
 {
   Serial.begin(115200);
-  while (!Serial) {
-    ;
-  }
+  monitor_setup();
   Serial.println("INFO: Beginning setup");
+  draw_text("INFO: Beginning setup");
   lora_setup();
   digitalWrite(8, HIGH);
   bme680_setup();
@@ -27,10 +27,12 @@ void setup()
   scd30_setup();
   sgp30_setup();
   si1145_setup(); 
+  draw_text("INFO: Finished setup");
 }
 
 void loop()
 {
+  draw_text("Collecting data");
   Serial.println("INFO: Beginning reading output");
   digitalWrite(8, HIGH);
   analog_reading(output);
@@ -45,4 +47,6 @@ void loop()
   lora_transmit(output);
   Serial.println(output);
   memset(output, 0, sizeof output);
+  draw_text("Done!");
+  delay(5000);
 }
