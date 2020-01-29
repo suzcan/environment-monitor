@@ -34,7 +34,7 @@ SdFile root;
 // Sparkfun SD shield: pin 8
 // MKRZero SD: SDCARD_SS_PIN
 //const 
-int chipSelect = 9;
+int chipSelect = 10;
 
 void setup() {
   // Open serial communications and wait for port to open:
