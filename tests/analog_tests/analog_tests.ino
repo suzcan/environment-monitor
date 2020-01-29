@@ -1,14 +1,8 @@
-int a1 = 1;
-int a2 = 2;
-int a3 = 3;
-int a4 = 4;
-int a5 = 5;
-
-#define A1 1
-#define A2 2
-#define A3 3
-#define A4 4
-#define A5 5
+#define A1 A1
+#define A2 A2
+#define A3 A3
+#define A4 A4
+#define A5 A5
 
 const int sampleWindow = 10000;
 
@@ -42,17 +36,17 @@ analogReadResolution(12);
     //Serial.print("num: "); Serial.println(num);
     
     total1 += analogRead(A1);
-  //  total2 += analogRead(A2);
-  //  total3 += analogRead(A3);
-  //  total4 += analogRead(A4);
-  //  total5 += analogRead(A5);
+    total2 += analogRead(A2);
+    total3 += analogRead(A3);
+    total4 += analogRead(A4);
+    total5 += analogRead(A5);
     num++;
   }
 
   Serial.print("A1: "); Serial.println(total1/num);
-  //Serial.print("A2: "); Serial.println(total2/num);
-  //Serial.print("A3: "); Serial.println(total3/num);
-  //Serial.print("A4: "); Serial.println(total4/num);
-  //Serial.print("A5: "); Serial.println(total5/num);
+  Serial.print("A2: "); Serial.println(total2/num);
+  Serial.print("A3: "); Serial.println(total3/num);
+  Serial.print("A4: "); Serial.println(total4/num);
+  Serial.print("A5: "); Serial.println(total5/num);
 //  */
 }
