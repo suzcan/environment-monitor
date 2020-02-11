@@ -5,15 +5,12 @@
 #include <SD.h>
 
 Sd2Card card;
-const int sdCard = 9;
+const int sdCard = 10;
 
 void sd_write(char output[])
 {
-  pinMode(9, OUTPUT);
-  while(!card.init(SPI_HALF_SPEED, sdCard)){
-    Serial.println("ERROR: failed sd card setup");
-    digitalWrite(8, HIGH);
-  }
+  delay(10);
+  digitalWrite(8, HIGH);
   if(SD.begin(sdCard)) {
     File file = SD.open("snsrtest.csv", FILE_WRITE);
     if (file) {
@@ -26,6 +23,7 @@ void sd_write(char output[])
   } else {
     Serial.println("ERROR: failed to initialize SD card");
   }
+  delay(1000);
   digitalWrite(8, LOW);
 }
 

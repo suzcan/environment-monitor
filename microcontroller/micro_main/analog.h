@@ -3,15 +3,14 @@
 
 #include "sensors.h"
 
-#define MIC 0
-#define A1 1
-#define A2 2
-#define A3 3
-#define A4 4
-#define A5 5
+#define MIC A0
+#define A1 A1
+#define A2 A2
+#define A3 A3
+#define A4 A4
+#define A5 A5
 
 const int sampleWindow = 10000;
-
 
 void mic_reading(char output[])
 {
@@ -60,7 +59,6 @@ void analog_reading(char output[])
   format_add(output, buff, total3/num);
   format_add(output, buff, total4/num);
   format_add(output, buff, total5/num);
-  
 }
 
 #endif

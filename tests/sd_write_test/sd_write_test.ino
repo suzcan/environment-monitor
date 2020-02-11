@@ -1,7 +1,8 @@
 #include <SD.h>
  
 File myFile;
-int chipSelect = 9;
+int chipSelect = 10;
+int cs = 0;
  
 void setup()
 {
@@ -15,7 +16,7 @@ void setup()
   // Note that even if it's not used as the CS pin, the hardware SS pin 
   // (10 on most Arduino boards, 53 on the Mega) must be left as an output 
   // or the SD library functions will not work. 
-   pinMode(9, OUTPUT);
+   pinMode(cs, OUTPUT);
  
   while(!SD.begin(chipSelect)) {
     Serial.println("initialization failed!");
@@ -25,20 +26,26 @@ void setup()
  
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
-  //SD.remove("test.txt");
-  //SD.remove("snsrdata.csv");
+  SD.remove("test.txt");
+  //SD.remove("snsrtest.csv");
   //snsrdata.csv
-  myFile = SD.open("snsrtest.csv", FILE_WRITE);
+  myFile = SD.open("test.txt", FILE_WRITE);
   delay(1000);
   // if the file opened okay, write to it:
+  while(!myFile) {
+    myFile = SD.open("test.txt", FILE_WRITE);
+    Serial.print("Checking: ");Serial.println(cs);
+  }
+  Serial.print("Success with: ");Serial.println(cs);
   if (myFile) {
     Serial.print("Writing to file...");
     // 26 data points
-    myFile.print("bme-temperature (C), bme-pressure (hPa), bme-humidity (%), bme-gas resistance (KOhms), bme-altitude (m), ");
-    myFile.print("pms-pm 1.0 standard, pms-pm 2.5 standard, pms-pm 10 standard, pms-pm 1.0 environmental, pms-pm 2.5 environmental, pms-pm 10 environmental, pms-particles (0.3um/0.1L), pms-particles (0.5um/0.1L), pms-particles (1.0um/0.1L), pms-particles (2.5um/0.1L), pms-particles (5.0um/0.1L), pms-particles (10.0um/0.1L), ");
-    myFile.print("scd- C02 (ppm), scd-temperature (C), scd-humidity (%), ");
-    myFile.print("sgp-TVOC (ppb/t), sgp-H2 (/t), sgp-Ethanol, ");
-    myFile.print("si-Visible, si-IR, si-UV Index");
+    //myFile.print("bme-temperature (C), bme-pressure (hPa), bme-humidity (%), bme-gas resistance (KOhms), bme-altitude (m), ");
+   // myFile.print("pms-pm 1.0 standard, pms-pm 2.5 standard, pms-pm 10 standard, pms-pm 1.0 environmental, pms-pm 2.5 environmental, pms-pm 10 environmental, pms-particles (0.3um/0.1L), pms-particles (0.5um/0.1L), pms-particles (1.0um/0.1L), pms-particles (2.5um/0.1L), pms-particles (5.0um/0.1L), pms-particles (10.0um/0.1L), ");
+   // myFile.print("scd- C02 (ppm), scd-temperature (C), scd-humidity (%), ");
+   // myFile.print("sgp-TVOC (ppb/t), sgp-H2 (/t), sgp-Ethanol, ");
+   // myFile.print("si-Visible, si-IR, si-UV Index");
+    myFile.print("TEST ACCESS");
     myFile.println("");
   // close the file:
     myFile.close();

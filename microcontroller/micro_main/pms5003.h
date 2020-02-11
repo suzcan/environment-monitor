@@ -71,11 +71,26 @@ boolean readPMSdata(Stream *s) {
 
 void pms5003_reading(char output[])
 {
+  char buff[8];
   if(!readPMSdata(&pmsSerial)){
     Serial.println("ERROR: Failed to perform reading from PMS5003");
+    // concentration units standard
+    format_add(output, buff, FAILED); // pm 1.0
+    format_add(output, buff, FAILED); // pm 2.5
+    format_add(output, buff, FAILED); // pm 10
+    // concentration units environmental
+    format_add(output, buff, FAILED); // pm 1.0
+    format_add(output, buff, FAILED); // pm 2.5
+    format_add(output, buff, FAILED); // pm 10
+    // data particles
+    format_add(output, buff, FAILED); // particles > 0.3um / 0.1L air
+    format_add(output, buff, FAILED); // particles > 0.5um / 0.1L air
+    format_add(output, buff, FAILED); // particles > 1.0um / 0.1L air
+    format_add(output, buff, data.particles_25um); // particles > 2.5um / 0.1L air
+    format_add(output, buff, data.particles_50um); // particles > 5.0um / 0.1L air
+    format_add(output, buff, data.particles_100um); // particles > 10.0um / 0.1L air
     return;
   } else {
-    char buff[8];
     // concentration units standard
     format_add(output, buff, data.pm10_standard); // pm 1.0
     format_add(output, buff, data.pm25_standard); // pm 2.5

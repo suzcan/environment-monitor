@@ -19,11 +19,14 @@ void loop()
    // collect data for 50 mS
   while (millis() - startMillis < sampleWindow)
    {
-      sample = analogRead(0);
+      sample = analogRead(A0);
       if (sample < 1024)  // toss out spurious readings
          if (sample > signalMax)
             signalMax = sample;
    }
- 
-   Serial.println(signalMax);
+
+   Serial.print("Analog read: "); Serial.println(signalMax);
+   uint16_t freq = map(signalMax, 0, 1023, 100, 8000);
+   Serial.print("Frequency: "); Serial.println(freq);
+   
 }

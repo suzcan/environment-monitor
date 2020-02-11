@@ -23,23 +23,33 @@ void sgp30_setup()
 
 void sgp30_reading(char output[])
 {
-  float temperature = 22.1; // [°C]
-  float humidity = 45.2; // [%RH]
+  float temperature = bme.temperature; // [°C]
+  float humidity = bme.humidity; // [%RH]
   sgp.setHumidity(getAbsoluteHumidity(temperature, humidity));
+  char buff[8];
 
   if (!sgp.IAQmeasure() || !sgp.IAQmeasureRaw()) {
     Serial.println("ERROR: Failed to perform reading from SGP30");
+    // calculations and not raw values
+    format_add(output, buff, FAILED); // ppb\t
+    // format_add(output, buff, sgp.eCO2); // ppm
+
+    // raw measurements
+    format_add(output, buff, FAILED); // \t
+    format_add(output, buff, FAILED); // 
     return;
+  } else {
+    // calculations and not raw values
+    format_add(output, buff, sgp.TVOC); // ppb\t
+    // format_add(output, buff, sgp.eCO2); // ppm
+
+    // raw measurements
+    format_add(output, buff, sgp.rawH2); // \t
+    format_add(output, buff, sgp.rawEthanol); // 
   }
 
-  char buff[8];
-  // calculations and not raw values
-  format_add(output, buff, sgp.TVOC); // ppb\t
-  // format_add(output, buff, sgp.eCO2); // ppm
-
-  // raw measurements
-  format_add(output, buff, sgp.rawH2); // \t
-  format_add(output, buff, sgp.rawEthanol); // 
+  
+   
 }
 
 #endif

@@ -30,16 +30,24 @@ void bme680_setup() {
 }
 
 void bme680_reading(char output[]){
+  char buff[8];
   if(!bme.performReading()) {
     Serial.println("ERROR: Failed to perform reading from BME680");
+    format_add(output, buff, FAILED); // C
+    format_add(output, buff, FAILED); // hPa
+    format_add(output, buff, FAILED); // (%)
+    format_add(output, buff, FAILED); // (KOhms)
+    format_add(output, buff, FAILED); // (m)
     return;
+  } else {
+    format_add(output, buff, bme.temperature); // C
+    format_add(output, buff, bme.pressure / 100.0); // hPa
+    format_add(output, buff, bme.humidity); // (%)
+    format_add(output, buff, bme.gas_resistance / 1000.0); // (KOhms)
+    format_add(output, buff, bme.readAltitude(SEALEVELPRESSURE_HPA)); // (m)
   }
 
-  char buff[8];
-  format_add(output, buff, bme.temperature); // C
-  format_add(output, buff, bme.pressure / 100.0); // hPa
-  format_add(output, buff, bme.humidity); // (%)
-  format_add(output, buff, bme.gas_resistance / 1000.0); // (KOhms)
-  format_add(output, buff, bme.readAltitude(SEALEVELPRESSURE_HPA)); // (m)
+ 
+  
 }
 #endif

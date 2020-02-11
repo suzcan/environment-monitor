@@ -22,7 +22,7 @@ void sill45_reading(char output[])
   format_add(output, buff, si.readVisible()); 
   format_add(output, buff, si.readIR());
   // calculated index value not raw
-  format_add(output, buff, si.readUV()/100); // is multiplied by 100as to get integer
+  format_add(output, buff, si.readUV()/100); // is multiplied by 100 as to get integer
 }
 
 #endif

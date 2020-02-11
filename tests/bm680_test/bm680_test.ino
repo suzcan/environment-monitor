@@ -61,6 +61,7 @@ void loop() {
     return;
   }
 
+  /*
   Serial.println("starting reading");
   char buff[8];
   strcat(output, "Temperature (C) =");
@@ -91,7 +92,8 @@ void loop() {
 
   Serial.println(output);
   Serial.println("finished");
-  /*
+  /*/
+  //*
   
   Serial.print("Temperature = ");
   Serial.print(bme.temperature);
@@ -112,7 +114,7 @@ void loop() {
   Serial.print("Approx. Altitude = ");
   Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
   Serial.println(" m");
-  */
+  
   Serial.println("finished loop");
   delay(2000);
 }

@@ -17,6 +17,7 @@
 #include <string.h>
 
 #define DEBUG false
+#define FAILED 123456
 
 // Helper functions
 

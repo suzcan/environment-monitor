@@ -2,7 +2,7 @@
 
 void setup() {
   // our debugging output
-  Serial.begin(115200);
+  Serial.begin(9600);
  
   // sensor baud rate is 9600
   pmsSerial.begin(9600);
@@ -41,6 +41,8 @@ void loop() {
     Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(data.particles_50um);
     Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(data.particles_100um);
     Serial.println("---------------------------------------");
+  } else {
+    //Serial.println("FAILED READING");
   }
 }
  
