@@ -17,7 +17,7 @@ void scd30_reading(char output[]){
   }
   else{
     Serial.println("ERROR: SCD30 NO DATA");
-    format_add(output, buff, FAILED)); // co2(ppm)
+    format_add(output, buff, FAILED); // co2(ppm)
     format_add(output, buff, FAILED); // temp(C)
     format_add(output, buff, FAILED); // humidity(%)
   }
