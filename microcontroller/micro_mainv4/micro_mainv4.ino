@@ -4,6 +4,7 @@
 #include "display.h"
 #include "lora.h"
 #include "pms5003.h"
+#include "rtc.h"
 #include "scd30.h"
 #include "sd.h"
 #include "sgp30.h"
@@ -14,7 +15,8 @@ char output[2064] = "";
 void setup() {
   Serial.begin(9600);
   Serial.println("Starting setup");
-  
+
+  rtc_setup();
   display_setup();
   sgp30_setup();
   bme680_setup();
@@ -27,6 +29,9 @@ void setup() {
 void loop() {
   draw_text("Collecting data...");
   Serial.println("Starting data collection");
+  rtc_reading(output);
+  // DEVICE ID
+  format_add(output, buff, 1);
   analog_reading(output);
   bme680_reading(output);
   pms5003_reading(output);
@@ -40,5 +45,5 @@ void loop() {
   memset(output, 0, sizeof(output));
   
   draw_text("Done, waiting...");
-  delay(5000);
+  delay(50000);
 }

@@ -16,6 +16,7 @@
 #include <SPI.h>
 #include <string.h>
 #include <SD.h>
+#include "RTClib.h"
 
 // BME DEFINES
 #define BME_SCK 13
@@ -60,6 +61,7 @@ RH_RF95 rf95(RFM95_CS, RFM95_INT);
 Adafruit_BME680 bme;
 Sd2Card card;
 SCD30 airSensor;
+RTC_PCF8523 rtc;
 
 // CONSTANTS
 const int sdCard = 10;

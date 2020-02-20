@@ -36,7 +36,6 @@ void lora_setup(){
 void lora_transmit(char output[]){
   rf95.send((uint8_t *) output, 251);
   rf95.waitPacketSent();
-  
 }
 
 #endif

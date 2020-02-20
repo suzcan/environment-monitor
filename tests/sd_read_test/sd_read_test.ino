@@ -24,9 +24,9 @@ void setup()
   Serial.println("initialization done.");
  
   // open the file for reading:
-  myFile = SD.open("snsrtest.csv");
+  myFile = SD.open("snsrdata.csv");
   if (myFile) {
-    Serial.println("snsrtest.csv");
+    Serial.println("snsrdata.csv");
  
     // read from the file until there's nothing else in it:
     while (myFile.available()) {

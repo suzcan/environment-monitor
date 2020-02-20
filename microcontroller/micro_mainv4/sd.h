@@ -4,7 +4,7 @@
 void sd_write(char output[]) {
   digitalWrite(8, HIGH);
   if(SD.begin(sdCard)) {
-    File file = SD.open("snsrtest.csv", FILE_WRITE);
+    File file = SD.open("snsrdata.csv", FILE_WRITE);
     if (file) {
       file.print(output);
       file.println("");
