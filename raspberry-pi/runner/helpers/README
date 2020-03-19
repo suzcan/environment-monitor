@@ -1,0 +1,5 @@
+This file contains scripts used to support the running of the raspberry pi server.
+
+update_ip.sh: This updates the IP address being used by the wordpress database to the one the raspberry pi is currently on.
+
+store_new_ip.sh: DO NOT RUN. Stores new IP once its been updated, called inside of update_ip.sh.

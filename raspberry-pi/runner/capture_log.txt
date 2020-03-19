@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "data_capture.py", line 32, in <module>
+    rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, 433.0)
+  File "/usr/local/lib/python3.7/dist-packages/adafruit_rfm9x.py", line 367, in __init__
+    raise RuntimeError('Failed to find rfm9x with expected version -- check wiring')
+RuntimeError: Failed to find rfm9x with expected version -- check wiring

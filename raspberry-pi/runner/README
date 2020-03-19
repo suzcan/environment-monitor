@@ -1,0 +1,9 @@
+This files support the capture of data from the file and allow it to be stored in the SQL database.
+
+config.py: Contains configuration to allow the python file with data capture to have permission to update the database
+
+font5x8.bin: File necessary to print data on the LoRa bonnet screen.
+
+capture_log.txt: Log file containing logs of data capture run.
+
+data_capture.py: File which handles data capture and storing.
