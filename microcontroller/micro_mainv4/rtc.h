@@ -10,6 +10,9 @@ void rtc_setup() {
   if (!rtc.initialized()) {
     Serial.println("ERROR: RTC is NOT running");
   }
+
+  // uncomment to configure rtc
+  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 }
 
 void rtc_reading(char output[]){

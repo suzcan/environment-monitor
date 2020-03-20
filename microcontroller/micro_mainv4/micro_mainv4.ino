@@ -2,7 +2,7 @@
 #include "analog.h"
 #include "bme680.h"
 #include "display.h"
-#include "lora.h"
+//#include "lora.h"
 #include "pms5003.h"
 #include "rtc.h"
 #include "scd30.h"
@@ -21,7 +21,7 @@ void setup() {
   sgp30_setup();
   bme680_setup();
   si1145_setup();
-  lora_setup();
+  //lora_setup();
   scd30_setup();
   pms5003_setup();
 }
@@ -31,7 +31,7 @@ void loop() {
   Serial.println("Starting data collection");
   rtc_reading(output);
   // DEVICE ID
-  format_add(output, buff, 1);
+  format_add(output, buff, BOXID);
   analog_reading(output);
   bme680_reading(output);
   pms5003_reading(output);
@@ -40,7 +40,7 @@ void loop() {
   si1145_reading(output);
   Serial.println(output);
 
-  lora_transmit(output);
+  //lora_transmit(output);
   sd_write(output);
   memset(output, 0, sizeof(output));
   

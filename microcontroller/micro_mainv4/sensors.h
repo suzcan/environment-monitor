@@ -1,22 +1,29 @@
 #ifndef _SENSORSH_
 #define _SENSORSH_
 
+// SET BOX ID
+// change for each different box
+// receiver uses ID 99
+#define BOXID 1
+
 // SENSOR LIBRARIES
 #include <Wire.h>
-#include "Adafruit_SI1145.h"
 #include <SPI.h>
+#include <SD.h>
 #include <RH_RF95.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_Sensor.h>
+#include "Adafruit_SI1145.h"
 #include "Adafruit_BME680.h"
 #include "SparkFun_SCD30_Arduino_Library.h"
 #include "Adafruit_SGP30.h"
+
 #include <avr/dtostrf.h>
-#include <SPI.h>
 #include <string.h>
-#include <SD.h>
+
 #include "RTClib.h"
+#include <stdio.h>
 
 // BME DEFINES
 #define BME_SCK 13

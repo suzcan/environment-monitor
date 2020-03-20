@@ -29,11 +29,11 @@ void setup()
   SD.remove("test.txt");
   //SD.remove("snsrtest.csv");
   //snsrdata.csv
-  myFile = SD.open("snsrdata.csv", FILE_WRITE);
+  myFile = SD.open("ahdbdata.csv", FILE_WRITE);
   delay(1000);
   // if the file opened okay, write to it:
   while(!myFile) {
-    myFile = SD.open("snsrdata.csv", FILE_WRITE);
+    myFile = SD.open("ahdbdata.csv", FILE_WRITE);
     Serial.print("Checking: ");Serial.println(cs);
   }
   Serial.print("Success with: ");Serial.println(cs);
